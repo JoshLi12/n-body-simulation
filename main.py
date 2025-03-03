@@ -5,10 +5,14 @@ import numpy as np
 
 def main():
     simulation = Simulation()
+    i = 1
     while True:
-        # print(simulation.bodies[0])
-        # print(simulation.bodies[1])
+        
+        print("Iteration",i)
+        print(simulation)
         simulation.update()
+        i += 1
+    
 
 if __name__ == "__main__":
     main()
