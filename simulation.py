@@ -8,8 +8,8 @@ dt = 0.00001
 class Simulation():
     def __init__(self):
         self.bodies = []
-        self.bodies.append(Body(Vector2D(0.5, 0.8), Vector2D(-0.3, 0.5), 5.0))
-        self.bodies.append(Body(Vector2D(-0.5, -0.8), Vector2D(1.0, 0.7), 5.0))
+        self.bodies.append(Body(Vector2D((200)+500, -1*(200)+400), Vector2D(-20, -35), 50.0))
+        self.bodies.append(Body(Vector2D((-200)+500, -1*(-200)+400), Vector2D(30, 15), 50.0))
     
     def update(self):
         r1 = self.bodies[0].get_pos()
@@ -33,6 +33,7 @@ class Simulation():
         Body 1 - Position: {self.bodies[0].pos}, Velocity: {self.bodies[0].vel}, Acceleration: {self.bodies[0].acc}, Mass: {self.bodies[0].mass}\n
         Body 2 - Position: {self.bodies[1].pos}, Velocity: {self.bodies[1].vel}, Acceleration: {self.bodies[1].acc}, Mass: {self.bodies[1].mass}
         """
-        
+    def get_bodies(self):
+        return self.bodies
     
 
