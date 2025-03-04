@@ -1,15 +1,16 @@
 import numpy as np
 from body import Body
 from vector import Vector2D
+import math
 
 
-dt = 0.00001
+dt = 0.0001
 
 class Simulation():
     def __init__(self):
         self.bodies = []
-        self.bodies.append(Body(Vector2D((200)+500, -1*(200)+400), Vector2D(-20, -35), 50.0))
-        self.bodies.append(Body(Vector2D((-200)+500, -1*(-200)+400), Vector2D(30, 15), 50.0))
+        self.bodies.append(Body(Vector2D((100)+500, -1*(100)+400), Vector2D(-7000,0), 10000.0))
+        self.bodies.append(Body(Vector2D((-100)+500, -1*(-100)+400), Vector2D(7000, 0), 10000.0))
     
     def update(self):
         r1 = self.bodies[0].get_pos()
@@ -20,13 +21,20 @@ class Simulation():
 
         r = r1 - r2
         r_mag = r.magnitude()
-        tmp = r / (r_mag ** 3)
+        print(r_mag)
 
-        self.bodies[0].acc += tmp * m2
+        tmp = r.normalize() / max((0.0001 * r_mag)**2, 1)
+        tmp *= 500
+
+        self.bodies[0].acc -= tmp * m2
         self.bodies[1].acc += tmp * m1
+        # print("Acc 1", self.bodies[0].acc)
+        # print("Acc 2", self.bodies[1].acc)
 
         self.bodies[0].update(dt)
         self.bodies[1].update(dt)
+
+        print(self.bodies[0].vel)
     
     def __repr__(self):
         return f"""

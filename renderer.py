@@ -53,7 +53,7 @@ class Renderer:
                 self.screen,
                 (255, 0, 0),
                 (body.pos.x, body.pos.y),
-                body.mass//2
+                20 # size
             )
         pygame.display.flip()
     
