@@ -9,8 +9,8 @@ dt = 0.0001
 class Simulation():
     def __init__(self):
         self.bodies = []
-        self.bodies.append(Body(Vector2D((100)+500, -1*(100)+400), Vector2D(-7000,0), 10000.0))
-        self.bodies.append(Body(Vector2D((-100)+500, -1*(-100)+400), Vector2D(7000, 0), 10000.0))
+        self.bodies.append(Body(Vector2D((300)+500, -1*(300)+400), Vector2D(8000,0), 10000.0))
+        self.bodies.append(Body(Vector2D((-100)+500, -1*(-100)+400), Vector2D(-8000, 0), 10000.0))
     
     def update(self):
         r1 = self.bodies[0].get_pos()
@@ -21,20 +21,24 @@ class Simulation():
 
         r = r1 - r2
         r_mag = r.magnitude()
-        print(r_mag)
 
         tmp = r.normalize() / max((0.0001 * r_mag)**2, 1)
+        # print((0.0001 * r_mag)**2)
         tmp *= 500
 
+        print(self.bodies[0].acc)
         self.bodies[0].acc -= tmp * m2
         self.bodies[1].acc += tmp * m1
         # print("Acc 1", self.bodies[0].acc)
         # print("Acc 2", self.bodies[1].acc)
 
+        
+
         self.bodies[0].update(dt)
         self.bodies[1].update(dt)
 
-        print(self.bodies[0].vel)
+        # print("Sum", self.bodies[0].vel + self.bodies[1].vel)
+
     
     def __repr__(self):
         return f"""
