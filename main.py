@@ -19,6 +19,7 @@ def main():
         simulation.update()
 
         render.draw_bodies(simulation.get_bodies())
+        
 
         render.clock.tick(60)
     

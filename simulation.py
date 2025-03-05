@@ -5,11 +5,12 @@ import math
 import random
 
 
-dt = 0.1
-radius = 0.5
+dt = 0.5
+radius = 2
 N = 100
 v = 1.0
 m = 1.0
+G = 5
 
 class Simulation():
     def __init__(self):
@@ -20,16 +21,19 @@ class Simulation():
             vel = Vector2D(random.randint(-1, 1), random.randint(-1, 1))
             self.bodies.append(Body(pos, vel, m, radius))
 
-        com_vol = sum((b.vel * b.mass for b in self.bodies), Vector2D(0,0))/N
+        com_vel = sum((b.vel * b.mass for b in self.bodies), Vector2D(0,0))/N
         com_pos = sum((b.pos * b.mass for b in self.bodies), Vector2D(0,0))/N
 
-        normalize_r = max(b.pos.magnitude() for b in self.bodies)
-
         for b in self.bodies:
-            b.pos /= normalize_r
-            
+            b.vel -= com_vel
+            b.pos -= com_pos
+            b.pos += Vector2D(400, 400)
 
+        # normalize_r = max(b.pos.magnitude() for b in self.bodies)
 
+        # for b in self.bodies:
+            # b.pos /= normalize_r//3
+            # b.pos += Vector2D(400, 400)
     
     def update(self):
         for i in range(N):
@@ -47,7 +51,7 @@ class Simulation():
                 # if (r_sq <= 2 * radius * radius):
                 #     return Vector2D(0, 0)
 
-                tmp = (m1 * m2 / (r_sq + 0.1))
+                tmp = G * (m1 * m2 / (r_sq + 0.1))
                 force = r.normalize() * tmp
 
                 self.bodies[i].acc -= force / m2
