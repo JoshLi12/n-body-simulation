@@ -8,7 +8,7 @@ import time
 import numpy as np
 
 def main():
-    render = Renderer(1000, 800, 50)
+    render = Renderer(800, 800, 50)
     simulation = Simulation()
 
     while render.running:

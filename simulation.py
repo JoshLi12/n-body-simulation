@@ -2,40 +2,60 @@ import numpy as np
 from body import Body
 from vector import Vector2D
 import math
+import random
 
 
-dt = 0.0001
+dt = 0.1
+radius = 0.5
+N = 100
+v = 1.0
+m = 1.0
 
 class Simulation():
     def __init__(self):
         self.bodies = []
-        self.bodies.append(Body(Vector2D((300)+500, -1*(300)+400), Vector2D(8000,0), 10000.0))
-        self.bodies.append(Body(Vector2D((-100)+500, -1*(-100)+400), Vector2D(-8000, 0), 10000.0))
+
+        for i in range(N):
+            pos = Vector2D(random.randint(0, 800), random.randint(0, 800))
+            vel = Vector2D(random.randint(-1, 1), random.randint(-1, 1))
+            self.bodies.append(Body(pos, vel, m, radius))
+
+        com_vol = sum((b.vel * b.mass for b in self.bodies), Vector2D(0,0))/N
+        com_pos = sum((b.pos * b.mass for b in self.bodies), Vector2D(0,0))/N
+
+        normalize_r = max(b.pos.magnitude() for b in self.bodies)
+
+        for b in self.bodies:
+            b.pos /= normalize_r
+            
+
+
     
     def update(self):
-        r1 = self.bodies[0].get_pos()
-        r2 = self.bodies[1].get_pos()
+        for i in range(N):
+            for j in range(i+1, N):
+                r1 = self.bodies[i].get_pos()
+                r2 = self.bodies[j].get_pos()
 
-        m1 = self.bodies[0].mass
-        m2 = self.bodies[1].mass
+                m1 = self.bodies[i].mass
+                m2 = self.bodies[j].mass
 
-        r = r1 - r2
-        r_mag = r.magnitude()
 
-        tmp = r.normalize() / max((0.0001 * r_mag)**2, 1)
-        # print((0.0001 * r_mag)**2)
-        tmp *= 500
+                r = r2 - r1
+                r_sq = r.x * r.x + r.y * r.y
 
-        print(self.bodies[0].acc)
-        self.bodies[0].acc -= tmp * m2
-        self.bodies[1].acc += tmp * m1
-        # print("Acc 1", self.bodies[0].acc)
-        # print("Acc 2", self.bodies[1].acc)
+                # if (r_sq <= 2 * radius * radius):
+                #     return Vector2D(0, 0)
 
-        
+                tmp = (m1 * m2 / (r_sq + 0.1))
+                force = r.normalize() * tmp
 
-        self.bodies[0].update(dt)
-        self.bodies[1].update(dt)
+                self.bodies[i].acc -= force / m2
+                self.bodies[j].acc += force / m1
+
+        for i in range(N):
+            self.bodies[i].update(dt)
+            
 
         # print("Sum", self.bodies[0].vel + self.bodies[1].vel)
 
