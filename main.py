@@ -11,10 +11,25 @@ def main():
     render = Renderer(800, 800, 50)
     simulation = Simulation()
 
-    while render.running:
+    while render.running:        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 render.running = False
+            
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_f:
+                    pygame.display.toggle_fullscreen()
+            
+            if event.type == pygame.MOUSEBUTTONDOWN:    
+                if event.button == 1:  # Left click
+                    render.dragging = True
+                    render.prev_mouse_pos = pygame.mouse.get_pos()
+
+            if event.type == pygame.MOUSEBUTTONUP:
+                if event.button == 1:
+                    render.dragging = False
+        
+        render.control_update()
 
         simulation.update()
 
