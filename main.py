@@ -8,7 +8,7 @@ import time
 import numpy as np
 
 def main():
-    render = Renderer(800, 800, 50)
+    render = Renderer(800, 800)
     simulation = Simulation()
 
     while render.running:        
@@ -34,7 +34,6 @@ def main():
         simulation.update()
 
         render.draw_bodies(simulation.get_bodies())
-        
 
         render.clock.tick(60)
     

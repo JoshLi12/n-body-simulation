@@ -5,31 +5,41 @@ import math
 import random
 
 
-dt = 0.1
+dt = 0.05
 radius = 2
-N = 100
+N = 150
 v = 1.0
 m = 1.0
-G = 10
+G = 5
+sd = 100
 
 class Simulation():
     def __init__(self):
         self.bodies = []
 
+        def rand_pos():
+            theta = random.randint(0, 1000)/1000 * 2 * math.pi
+            return Vector2D(400 + math.cos(theta) * random.randint(1, sd), 400 + math.sin(theta) * random.randint(0,sd))
+        
+        def rand_vel():
+            theta = random.randint(0, 1000)/1000 * 2 * math.pi
+            return Vector2D(math.cos(theta), math.sin(theta))
+
+
         for i in range(N):
-            pos = Vector2D(random.randint(200, 600), random.randint(200, 600))
-            vel = Vector2D(random.randint(-1, 1), random.randint(-1, 1))
+            pos = rand_pos()
+            vel = rand_vel()
             self.bodies.append(Body(pos, vel, m, radius))
 
-        com_vel = sum((b.vel * b.mass for b in self.bodies), Vector2D(0,0))/N
-        com_pos = sum((b.pos * b.mass for b in self.bodies), Vector2D(0,0))/N
+        # com_vel = sum((b.vel * b.mass for b in self.bodies), Vector2D(0,0))/N
+        # com_pos = sum((b.pos * b.mass for b in self.bodies), Vector2D(0,0))/N
 
-        for b in self.bodies:
-            b.vel -= com_vel
-            b.pos -= com_pos
-            b.pos += Vector2D(400, 400)
+        # for b in self.bodies:
+        #     b.vel -= com_vel
+        #     b.pos -= com_pos
+        #     b.pos += Vector2D(400, 400)
 
-        normalize_r = max(b.pos.magnitude() for b in self.bodies)
+        # normalize_r = max(b.pos.magnitude() for b in self.bodies)
 
         # for b in self.bodies:
         #     b.pos /= normalize_r
@@ -46,23 +56,21 @@ class Simulation():
 
 
                 r = r2 - r1
+                if r.magnitude() == 0:
+                    r = Vector2D(random.randint(-1, 1)/1000, random.randint(-1, 1)/1000)
                 r_sq = r.x * r.x + r.y * r.y
 
-                # if (r_sq <= 2 * radius * radius):
-                #     return Vector2D(0, 0)
-
-                tmp = G * (m1 * m2 / max(r_sq, 1))
+                tmp = G * (m1 * m2 / max(r_sq, 0.001))
                 force = r.normalize() * tmp
 
-                self.bodies[i].acc += force / m2
-                self.bodies[j].acc -= force / m1
+                # print(force/m2)
+
+                self.bodies[i].acc -= force / m2
+                self.bodies[j].acc += force / m1
 
         for i in range(N):
             self.bodies[i].update(dt)
             
-
-        # print("Sum", self.bodies[0].vel + self.bodies[1].vel)
-
     
     def __repr__(self):
         return f"""

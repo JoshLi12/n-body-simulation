@@ -3,11 +3,10 @@ import numpy as np
 import math
 
 class Renderer:
-    def __init__(self, width, height, grid_spacing):
+    def __init__(self, width, height):
         pygame.init()
         self.width = width
         self.height = height
-        self.grid_spacing = grid_spacing
         self.screen = pygame.display.set_mode((self.width, self.height), pygame.RESIZABLE)
         pygame.display.set_caption("N-Body Simulation")
         self.clock = pygame.time.Clock()

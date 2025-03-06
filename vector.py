@@ -24,7 +24,10 @@ class Vector2D:
         return math.sqrt(self.x ** 2 + self.y **2)
 
     def normalize(self):
-        return Vector2D(self.x / self.magnitude(), self.y / self.magnitude())
+        if self.magnitude() == 0:
+            m = Vector2D(1e-6, 1e-6)
+        m = self.magnitude()
+        return Vector2D(self.x / m, self.y / m)
 
     def __repr__(self):
         return f"<{self.x}, {self.y}>"
