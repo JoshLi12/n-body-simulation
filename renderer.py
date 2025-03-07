@@ -16,7 +16,7 @@ class Renderer:
         self.dragging = False
         self.prev_mouse_pos = (0, 0)
         self.target_offset_x, self.target_offset_y = 0, 0
-        self.pan_speed = 0.25
+        self.pan_speed = 0.5
 
 
 

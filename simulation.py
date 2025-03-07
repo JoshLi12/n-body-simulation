@@ -5,12 +5,12 @@ import math
 import random
 
 
-dt = 0.05
-radius = 2
-N = 150
+dt = 0.5
+radius = 1
+N = 175
 v = 1.0
 m = 1.0
-G = 5
+G = 1
 sd = 100
 
 class Simulation():
@@ -59,14 +59,16 @@ class Simulation():
                 if r.magnitude() == 0:
                     r = Vector2D(random.randint(-1, 1)/1000, random.randint(-1, 1)/1000)
                 r_sq = r.x * r.x + r.y * r.y
+                r_mag = math.sqrt(r_sq)
 
-                tmp = G * (m1 * m2 / max(r_sq, 0.001))
-                force = r.normalize() * tmp
+                # tmp = G * (m1 * m2 / max(r_sq, 0.1))
+                tmp = r * G / (max(r_sq, 0.1) * r_mag)
+                # force = r.normalize() * tmp
 
-                # print(force/m2)
+                # print(force)
 
-                self.bodies[i].acc -= force / m2
-                self.bodies[j].acc += force / m1
+                self.bodies[i].acc += tmp * m2
+                self.bodies[j].acc -= tmp * m1
 
         for i in range(N):
             self.bodies[i].update(dt)
