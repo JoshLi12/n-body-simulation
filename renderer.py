@@ -17,17 +17,19 @@ class Renderer:
         self.prev_mouse_pos = (0, 0)
         self.target_offset_x, self.target_offset_y = 0, 0
         self.pan_speed = 0.5
+        self.zoom = 10.0
 
 
 
-    def draw_bodies(self, bodies):
+    def draw_bodies(self, alpha, bodies):
         self.screen.fill((0,0,0))
 
         for body in bodies:
+            interpolated_pos = body.frame_interpolate(alpha)
             pygame.draw.circle(
                 self.screen,
                 (255, 255, 255),
-                (body.pos.x + self.offset_x, body.pos.y + self.offset_y),
+                (interpolated_pos + self.offset_x, interpolated_pos + self.offset_y),
                 body.r # size
             )
         pygame.display.flip()

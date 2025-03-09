@@ -5,25 +5,26 @@ import math
 import random
 
 
-dt = 0.5
+dt = 1
 radius = 1
-N = 175
+N = 170
 v = 1.0
 m = 1.0
-G = 1
-sd = 100
+G = 10
+sd = 150
 
 class Simulation():
     def __init__(self):
         self.bodies = []
 
         def rand_pos():
-            theta = random.randint(0, 1000)/1000 * 2 * math.pi
-            return Vector2D(400 + math.cos(theta) * random.randint(1, sd), 400 + math.sin(theta) * random.randint(0,sd))
+            theta = random.uniform(0, 2 * math.pi)
+            scale = (random.uniform(0, 1) ** 0.5) * sd
+            return Vector2D(400 + math.cos(theta) * scale, 400 + math.sin(theta) * scale)
         
         def rand_vel():
-            theta = random.randint(0, 1000)/1000 * 2 * math.pi
-            return Vector2D(math.cos(theta), math.sin(theta))
+            theta = random.uniform(0, 2 * math.pi)
+            return Vector2D(math.cos(theta) * 5, math.sin(theta) * 5)
 
 
         for i in range(N):
@@ -31,15 +32,15 @@ class Simulation():
             vel = rand_vel()
             self.bodies.append(Body(pos, vel, m, radius))
 
-        # com_vel = sum((b.vel * b.mass for b in self.bodies), Vector2D(0,0))/N
-        # com_pos = sum((b.pos * b.mass for b in self.bodies), Vector2D(0,0))/N
+        com_vel = sum((b.vel * b.mass for b in self.bodies), Vector2D(0,0))/N
+        com_pos = sum((b.pos * b.mass for b in self.bodies), Vector2D(0,0))/N
 
-        # for b in self.bodies:
-        #     b.vel -= com_vel
-        #     b.pos -= com_pos
-        #     b.pos += Vector2D(400, 400)
+        for b in self.bodies:
+            b.vel -= com_vel
+            b.pos -= com_pos
+            b.pos += Vector2D(400, 400)
 
-        # normalize_r = max(b.pos.magnitude() for b in self.bodies)
+        normalize_r = max(b.pos.magnitude() for b in self.bodies)
 
         # for b in self.bodies:
         #     b.pos /= normalize_r
@@ -57,7 +58,7 @@ class Simulation():
 
                 r = r2 - r1
                 if r.magnitude() == 0:
-                    r = Vector2D(random.randint(-1, 1)/1000, random.randint(-1, 1)/1000)
+                    r = Vector2D(1e-6, 1e-6)
                 r_sq = r.x * r.x + r.y * r.y
                 r_mag = math.sqrt(r_sq)
 
