@@ -25,6 +25,12 @@ def main():
 
         accumulated_time += frame_time
 
+        updates_this_frame = 0
+        while accumulated_time >= FIXED_DT and updates_this_frame < MAX_UPDATES_PER_FRAME:
+            simulation.update()  # Update simulation with a fixed time step
+            accumulated_time -= FIXED_DT
+            updates_this_frame += 1
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 render.running = False
@@ -44,18 +50,14 @@ def main():
         
         render.control_update()
 
-        updates_this_frame = 0
-        while accumulated_time >= FIXED_DT and updates_this_frame < MAX_UPDATES_PER_FRAME:
-            simulation.update()  # Update simulation with a fixed time step
-            accumulated_time -= FIXED_DT
-            updates_this_frame += 1
+        
 
         # simulation.update()
-        alpha = accumulated_time / FIXED_DT
+        # alpha = accumulated_time / FIXED_DT
 
-        render.draw_bodies(alpha, simulation.get_bodies())
+        render.draw_bodies(simulation.get_bodies())
 
-        # render.clock.tick(60)
+        render.clock.tick(60)
     
     pygame.quit()
 

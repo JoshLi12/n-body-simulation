@@ -21,15 +21,15 @@ class Renderer:
 
 
 
-    def draw_bodies(self, alpha, bodies):
+    def draw_bodies(self, bodies):
         self.screen.fill((0,0,0))
 
         for body in bodies:
-            interpolated_pos = body.frame_interpolate(alpha)
+            # interpolated_pos = body.frame_interpolate(alpha)
             pygame.draw.circle(
                 self.screen,
                 (255, 255, 255),
-                (interpolated_pos + self.offset_x, interpolated_pos + self.offset_y),
+                (body.pos.x + self.offset_x, body.pos.y + self.offset_y),
                 body.r # size
             )
         pygame.display.flip()
