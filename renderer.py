@@ -25,7 +25,6 @@ class Renderer:
         self.screen.fill((0,0,0))
 
         for body in bodies:
-            # interpolated_pos = body.frame_interpolate(alpha)
             pygame.draw.circle(
                 self.screen,
                 (255, 255, 255),

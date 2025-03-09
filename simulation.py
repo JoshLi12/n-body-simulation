@@ -5,7 +5,7 @@ import math
 import random
 
 
-dt = 0.1
+dt = 1
 radius = 1
 N = 170
 v = 1.0

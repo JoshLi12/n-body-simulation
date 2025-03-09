@@ -7,29 +7,13 @@ import threading
 import time
 import numpy as np
 
-MAX_UPDATES_PER_FRAME = 5
-FIXED_DT = 1 / 60
-
-
 def main():
     render = Renderer(800, 800)
     simulation = Simulation()
 
-    last_time = time.time()
-    accumulated_time = 0.0
+
 
     while render.running:
-        current_time = time.time()
-        frame_time = current_time - last_time
-        last_time = current_time        
-
-        accumulated_time += frame_time
-
-        updates_this_frame = 0
-        while accumulated_time >= FIXED_DT and updates_this_frame < MAX_UPDATES_PER_FRAME:
-            simulation.update()  # Update simulation with a fixed time step
-            accumulated_time -= FIXED_DT
-            updates_this_frame += 1
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -52,8 +36,7 @@ def main():
 
         
 
-        # simulation.update()
-        # alpha = accumulated_time / FIXED_DT
+        simulation.update()
 
         render.draw_bodies(simulation.get_bodies())
 
